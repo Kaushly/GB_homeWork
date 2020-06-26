@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static final int SIZE = 3;
-    public static final int SIZE_WIN = 3;
+    public static final int SIZE = 5;
+    public static final int SIZE_WIN = 4;
 
     private static char map[][] = new char[SIZE][SIZE];
 
@@ -24,16 +24,16 @@ public class Main {
     private static void GameXO() {
         indentMap();
         drawMap();
-        while(true){
+        while (true) {
             while (fullMap()) {
                 if (Player()) break;
                 if (AI()) break;
             }
             System.out.println("Еще партию? 1 - Да / 0 - Нет");
             int repeat = scanner.nextInt();
-            if(repeat == 0){
+            if (repeat == 0) {
                 return;
-            }else{
+            } else {
                 indentMap();
                 drawMap();
             }
@@ -153,19 +153,54 @@ public class Main {
                 }
             }
             if (i == j) {
-                if (map[k][k] == symbol){
+                if (map[k][k] == symbol) {
                     diagonal++;
                     if (diagonal == SIZE_WIN - 1) {
                         return true;
                     }
                 }
             }
-            if(i == (SIZE - j - 1) || j == (SIZE - i - 1)){
-                if(map[k][SIZE - k - 1] == symbol){
+            if (i == (SIZE - j - 1) || j == (SIZE - i - 1)) {
+                if (map[k][SIZE - k - 1] == symbol) {
                     diagonal2++;
                     if (diagonal2 == SIZE_WIN - 1) {
                         return true;
                     }
+                }
+            }
+        }
+        int num = SIZE - SIZE_WIN;
+        int small_diagonalMasterUp = 0;
+        int small_diagonalMasterDown = 0;
+        int small_diagonalUp = 0;
+        int small_diagonalDown = 0;
+
+        for (int k = 0; k < SIZE; k++) {
+            if ((k + num) < SIZE && map[k + num][k] == symbol) {
+                small_diagonalMasterUp++;
+                if (small_diagonalMasterUp == SIZE_WIN - 1) {
+                    return true;
+                }
+            }
+
+            if ((k - num) >= 0 && map[k - num][k] == symbol) {
+                small_diagonalMasterDown++;
+                if (small_diagonalMasterDown == SIZE_WIN - 1) {
+                    return true;
+                }
+            }
+
+            if ((SIZE - k - 1 - num) >= 0 && map[k][SIZE - k - 1 - num] == symbol) {
+                small_diagonalUp++;
+                if (small_diagonalUp == SIZE_WIN - 1) {
+                    return true;
+                }
+            }
+
+            if ((SIZE - k) < SIZE && map[k][SIZE - k] == symbol) {
+                small_diagonalDown++;
+                if (small_diagonalDown == SIZE_WIN - 1) {
+                    return true;
                 }
             }
         }
@@ -208,7 +243,7 @@ public class Main {
                 if (diagonal == SIZE_WIN) {
                     return true;
                 }
-            }else{
+            } else {
                 diagonal = 0;
             }
             if (map[i][SIZE - i - 1] == symbol) {
@@ -216,7 +251,7 @@ public class Main {
                 if (diagonal2 == SIZE_WIN) {
                     return true;
                 }
-            }else{
+            } else {
                 diagonal2 = 0;
             }
             for (int j = 0; j < SIZE; j++) {
@@ -225,7 +260,7 @@ public class Main {
                     if (row == SIZE_WIN) {
                         return true;
                     }
-                }else{
+                } else {
                     row = 0;
                 }
                 if (map[j][i] == symbol) {
@@ -233,8 +268,53 @@ public class Main {
                     if (vert == SIZE_WIN) {
                         return true;
                     }
-                }else{
+                } else {
                     vert = 0;
+                }
+            }
+        }
+        if (SIZE > SIZE_WIN) {
+            int num = SIZE - SIZE_WIN;
+            int small_diagonalMasterUp = 0;
+            int small_diagonalMasterDown = 0;
+            int small_diagonalUp = 0;
+            int small_diagonalDown = 0;
+
+            for (int j = 0; j < SIZE; j++) {
+                if ((j + num) < SIZE && map[j + num][j] == symbol) {
+                    small_diagonalMasterUp++;
+                    if (small_diagonalMasterUp == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalMasterUp = 0;
+                }
+
+                if ((j - num) >= 0 && map[j - num][j] == symbol) {
+                    small_diagonalMasterDown++;
+                    if (small_diagonalMasterDown == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalMasterDown = 0;
+                }
+
+                if ((SIZE - j - 1 - num) >= 0 && map[j][SIZE - j - 1 - num] == symbol) {
+                    small_diagonalUp++;
+                    if (small_diagonalUp == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalUp = 0;
+                }
+
+                if ((SIZE - j) < SIZE && map[j][SIZE - j] == symbol) {
+                    small_diagonalDown++;
+                    if (small_diagonalDown == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalDown = 0;
                 }
             }
         }
