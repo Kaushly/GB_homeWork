@@ -23,6 +23,7 @@ public class Main {
             if (Player()) break;
             if (AI()) break;
         }
+
     }
 
     private static boolean Player() {
@@ -33,7 +34,7 @@ public class Main {
             return true;
         }
 
-        if(!fullMap()){
+        if (!fullMap()) {
             return true;
         }
         return false;
@@ -83,15 +84,78 @@ public class Main {
 
         map[y][x] = DOT_X;
     }
+
     public static void goAI() {
         int x;
         int y;
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (map[i][j] == EMPTY) {
+                    if (bestBet(i, j, DOT_O)) {
+                        System.out.println("Компьютер походил по координатом " + (j + 1) + " и " + (i + 1));
+                        map[i][j] = DOT_O;
+                        return;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (map[i][j] == EMPTY) {
+                    if (bestBet(i, j, DOT_X)) {
+                        System.out.println("Компьютер походил по координатом " + (j + 1) + " и " + (i + 1));
+                        map[i][j] = DOT_O;
+                        return;
+                    }
+                }
+            }
+        }
         do {
             x = random.nextInt(size);
             y = random.nextInt(size);
         } while (!errorCoordinate(x, y));
-
+        System.out.println("Компьютер походил по координатом " + (x + 1) + " и " + (y + 1));
         map[y][x] = DOT_O;
+    }
+
+    private static boolean bestBet(int i, int j, char symbol) {
+        int hor = 0;
+        int vert = 0;
+        int diagonal = 0;
+        int diagonal2 = 0;
+
+        for (int k = 0; k < size; k++) {
+            if (map[i][k] == symbol) {
+                hor++;
+                if (hor == sizeWin - 1) {
+                    return true;
+                }
+            }
+            if (map[k][j] == symbol) {
+                vert++;
+                if (vert == sizeWin - 1) {
+                    return true;
+                }
+            }
+            if (i == j) {
+                if (map[k][k] == symbol){
+                    diagonal++;
+                    if (diagonal == sizeWin - 1) {
+                        return true;
+                    }
+                }
+            }
+            if(i == (size - j - 1) || j == (size - i - 1)){
+                if(map[k][size - k - 1] == symbol){
+                    diagonal2++;
+                    if (diagonal2 == sizeWin - 1) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private static boolean errorCoordinate(int x, int y) {
@@ -104,7 +168,6 @@ public class Main {
         }
         return result;
     }
-
 
 
     public static boolean fullMap() {
@@ -124,33 +187,42 @@ public class Main {
         int diagonal2 = 0;
         int row;
         int vert;
+
         for (int i = 0; i < size; i++) {
             row = 0;
             vert = 0;
             if (map[i][i] == symbol) {
                 diagonal++;
-                if(diagonal == sizeWin){
+                if (diagonal == sizeWin) {
                     return true;
                 }
+            }else{
+                diagonal = 0;
             }
             if (map[i][size - i - 1] == symbol) {
                 diagonal2++;
-                if(diagonal2 == sizeWin){
+                if (diagonal2 == sizeWin) {
                     return true;
                 }
+            }else{
+                diagonal2 = 0;
             }
             for (int j = 0; j < size; j++) {
                 if (map[i][j] == symbol) {
                     row++;
-                    if(row == sizeWin){
+                    if (row == sizeWin) {
                         return true;
                     }
+                }else{
+                    row = 0;
                 }
                 if (map[j][i] == symbol) {
                     vert++;
-                    if(vert == sizeWin){
+                    if (vert == sizeWin) {
                         return true;
                     }
+                }else{
+                    vert = 0;
                 }
             }
         }
