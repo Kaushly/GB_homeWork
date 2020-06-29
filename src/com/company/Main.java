@@ -1,0 +1,252 @@
+package com.company;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+
+    public static final int SIZE = 3;
+    public static final int SIZE_WIN = 3;
+
+    private static char map[][] = new char[SIZE][SIZE];
+
+    private static final char EMPTY = '*';
+    private static final char DOT_X = 'X';
+    private static final char DOT_O = 'O';
+
+    private static Scanner scanner = new Scanner(System.in);
+    private static Random random = new Random();
+
+    public static void main(String[] args) {
+        GameXO();
+    }
+
+    private static void GameXO() {
+        indentMap();
+        drawMap();
+        while (true) {
+            while (fullMap()) {
+                if (Player()) break;
+                if (AI()) break;
+            }
+            System.out.println("Еще партию? 1 - Да / 0 - Нет");
+            int repeat = scanner.nextInt();
+            if (repeat == 0) {
+                return;
+            } else {
+                indentMap();
+                drawMap();
+            }
+        }
+    }
+
+    public static void indentMap() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                map[i][j] = EMPTY;
+            }
+        }
+    }
+
+    public static void drawMap() {
+        for (int i = 0; i <= SIZE; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print(i + 1 + " ");
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static boolean Player() {
+        goPlayer();
+        drawMap();
+        if (checkWin(DOT_X)) {
+            System.out.println("Выиграли - " + DOT_X);
+            return true;
+        }
+
+        if (!fullMap()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void goPlayer() {
+        int x;
+        int y;
+        do {
+            System.out.println("Введите координаты через пробел");
+            x = scanner.nextInt() - 1;
+            y = scanner.nextInt() - 1;
+        } while (!errorCoordinate(x, y));
+
+        map[y][x] = DOT_X;
+    }
+
+    private static boolean AI() {
+        goAI();
+        System.out.println("Ход компьютера");
+        drawMap();
+        if (checkWin(DOT_O)) {
+            System.out.println("Выиграли - " + DOT_O);
+            return true;
+        }
+        return false;
+    }
+
+    public static void goAI() {
+        int x;
+        int y;
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == EMPTY) {
+                    map[i][j] = DOT_O;
+                    if (checkWin(DOT_O)) {
+                        System.out.println("Компьютер походил по координатом " + (j + 1) + " и " + (i + 1));
+                        return;
+                    }else
+                        map[i][j] = EMPTY;
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == EMPTY) {
+                    map[i][j] = DOT_X;
+                    if (checkWin(DOT_X)) {
+                        System.out.println("Компьютер походил по координатом " + (j + 1) + " и " + (i + 1));
+                        map[i][j] = DOT_O;
+                        return;
+                    }else{
+                        map[i][j] = EMPTY;
+                    }
+                }
+            }
+        }
+        do {
+            x = random.nextInt(SIZE);
+            y = random.nextInt(SIZE);
+        } while (!errorCoordinate(x, y));
+        System.out.println("Компьютер походил по координатом " + (x + 1) + " и " + (y + 1));
+        map[y][x] = DOT_O;
+    }
+
+    private static boolean errorCoordinate(int x, int y) {
+        boolean result = true;
+        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+            System.out.println("Вы вышли за границы поля");
+            result = false;
+        } else if (map[y][x] != EMPTY) {
+            result = false;
+        }
+        return result;
+    }
+
+
+    public static boolean fullMap() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == EMPTY) {
+                    return true;
+                }
+            }
+        }
+        System.out.println("Ничья!");
+        return false;
+    }
+
+    public static boolean checkWin(char symbol) {
+        int diagonal = 0;
+        int diagonal2 = 0;
+
+        for (int i = 0; i < SIZE; i++) {
+            int row = 0;
+            int vert = 0;
+            if (map[i][i] == symbol) {
+                diagonal++;
+                if (diagonal == SIZE_WIN) {
+                    return true;
+                }
+            } else {
+                diagonal = 0;
+            }
+            if (map[i][SIZE - i - 1] == symbol) {
+                diagonal2++;
+                if (diagonal2 == SIZE_WIN) {
+                    return true;
+                }
+            } else {
+                diagonal2 = 0;
+            }
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == symbol) {
+                    row++;
+                    if (row == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    row = 0;
+                }
+                if (map[j][i] == symbol) {
+                    vert++;
+                    if (vert == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    vert = 0;
+                }
+            }
+        }
+        if (SIZE > SIZE_WIN) {
+            int small_diagonalMasterUp = 0;
+            int small_diagonalMasterDown = 0;
+            int small_diagonalUp = 0;
+            int small_diagonalDown = 0;
+
+            for (int j = 0; j < SIZE; j++) {
+                if ((j + 1) < SIZE && map[j + 1][j] == symbol) {
+                    small_diagonalMasterUp++;
+                    if (small_diagonalMasterUp == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalMasterUp = 0;
+                }
+
+                if ((j - 1) >= 0 && map[j - 1][j] == symbol) {
+                    small_diagonalMasterDown++;
+                    if (small_diagonalMasterDown == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalMasterDown = 0;
+                }
+
+                if ((SIZE - j - 1 - 1) >= 0 && map[j][SIZE - j - 1 - 1] == symbol) {
+                    small_diagonalUp++;
+                    if (small_diagonalUp == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalUp = 0;
+                }
+
+                if ((SIZE - j) < SIZE && map[j][SIZE - j] == symbol) {
+                    small_diagonalDown++;
+                    if (small_diagonalDown == SIZE_WIN) {
+                        return true;
+                    }
+                } else {
+                    small_diagonalDown = 0;
+                }
+            }
+        }
+        return false;
+    }
+}
