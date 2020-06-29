@@ -1,12 +1,12 @@
 package com.company;
 
 public class Staff {
-    String name;
-    String position;
-    String email;
-    int phone;
-    int salary;
-    int age;
+    private String name;
+    private String position;
+    private String email;
+    private int phone;
+    private int salary;
+    private int age;
 
     public Staff(String name, String position, String email, int phone, int salary, int age) {
         this.name = name;
