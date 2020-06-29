@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static final int SIZE = 5;
-    public static final int SIZE_WIN = 4;
+    public static final int SIZE = 3;
+    public static final int SIZE_WIN = 3;
 
     private static char map[][] = new char[SIZE][SIZE];
 
@@ -106,21 +106,25 @@ public class Main {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (map[i][j] == EMPTY) {
-                    if (bestBet(i, j, DOT_O)) {
+                    map[i][j] = DOT_O;
+                    if (checkWin(DOT_O)) {
                         System.out.println("Компьютер походил по координатом " + (j + 1) + " и " + (i + 1));
-                        map[i][j] = DOT_O;
                         return;
-                    }
+                    }else
+                        map[i][j] = EMPTY;
                 }
             }
         }
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (map[i][j] == EMPTY) {
-                    if (bestBet(i, j, DOT_X)) {
+                    map[i][j] = DOT_X;
+                    if (checkWin(DOT_X)) {
                         System.out.println("Компьютер походил по координатом " + (j + 1) + " и " + (i + 1));
                         map[i][j] = DOT_O;
                         return;
+                    }else{
+                        map[i][j] = EMPTY;
                     }
                 }
             }
@@ -131,80 +135,6 @@ public class Main {
         } while (!errorCoordinate(x, y));
         System.out.println("Компьютер походил по координатом " + (x + 1) + " и " + (y + 1));
         map[y][x] = DOT_O;
-    }
-
-    private static boolean bestBet(int i, int j, char symbol) {
-        int hor = 0;
-        int vert = 0;
-        int diagonal = 0;
-        int diagonal2 = 0;
-
-        for (int k = 0; k < SIZE; k++) {
-            if (map[i][k] == symbol) {
-                hor++;
-                if (hor == SIZE_WIN - 1) {
-                    return true;
-                }
-            }
-            if (map[k][j] == symbol) {
-                vert++;
-                if (vert == SIZE_WIN - 1) {
-                    return true;
-                }
-            }
-            if (i == j) {
-                if (map[k][k] == symbol) {
-                    diagonal++;
-                    if (diagonal == SIZE_WIN - 1) {
-                        return true;
-                    }
-                }
-            }
-            if (i == (SIZE - j - 1) || j == (SIZE - i - 1)) {
-                if (map[k][SIZE - k - 1] == symbol) {
-                    diagonal2++;
-                    if (diagonal2 == SIZE_WIN - 1) {
-                        return true;
-                    }
-                }
-            }
-        }
-        int num = SIZE - SIZE_WIN;
-        int small_diagonalMasterUp = 0;
-        int small_diagonalMasterDown = 0;
-        int small_diagonalUp = 0;
-        int small_diagonalDown = 0;
-
-        for (int k = 0; k < SIZE; k++) {
-            if ((k + num) < SIZE && map[k + num][k] == symbol) {
-                small_diagonalMasterUp++;
-                if (small_diagonalMasterUp == SIZE_WIN - 1) {
-                    return true;
-                }
-            }
-
-            if ((k - num) >= 0 && map[k - num][k] == symbol) {
-                small_diagonalMasterDown++;
-                if (small_diagonalMasterDown == SIZE_WIN - 1) {
-                    return true;
-                }
-            }
-
-            if ((SIZE - k - 1 - num) >= 0 && map[k][SIZE - k - 1 - num] == symbol) {
-                small_diagonalUp++;
-                if (small_diagonalUp == SIZE_WIN - 1) {
-                    return true;
-                }
-            }
-
-            if ((SIZE - k) < SIZE && map[k][SIZE - k] == symbol) {
-                small_diagonalDown++;
-                if (small_diagonalDown == SIZE_WIN - 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private static boolean errorCoordinate(int x, int y) {
@@ -274,14 +204,13 @@ public class Main {
             }
         }
         if (SIZE > SIZE_WIN) {
-            int num = SIZE - SIZE_WIN;
             int small_diagonalMasterUp = 0;
             int small_diagonalMasterDown = 0;
             int small_diagonalUp = 0;
             int small_diagonalDown = 0;
 
             for (int j = 0; j < SIZE; j++) {
-                if ((j + num) < SIZE && map[j + num][j] == symbol) {
+                if ((j + 1) < SIZE && map[j + 1][j] == symbol) {
                     small_diagonalMasterUp++;
                     if (small_diagonalMasterUp == SIZE_WIN) {
                         return true;
@@ -290,7 +219,7 @@ public class Main {
                     small_diagonalMasterUp = 0;
                 }
 
-                if ((j - num) >= 0 && map[j - num][j] == symbol) {
+                if ((j - 1) >= 0 && map[j - 1][j] == symbol) {
                     small_diagonalMasterDown++;
                     if (small_diagonalMasterDown == SIZE_WIN) {
                         return true;
@@ -299,7 +228,7 @@ public class Main {
                     small_diagonalMasterDown = 0;
                 }
 
-                if ((SIZE - j - 1 - num) >= 0 && map[j][SIZE - j - 1 - num] == symbol) {
+                if ((SIZE - j - 1 - 1) >= 0 && map[j][SIZE - j - 1 - 1] == symbol) {
                     small_diagonalUp++;
                     if (small_diagonalUp == SIZE_WIN) {
                         return true;
