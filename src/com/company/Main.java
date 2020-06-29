@@ -2,9 +2,9 @@ package com.company;
 
 public class Main {
 
-    private static int lineAge = 40;
 
     public static void main(String[] args) {
+        int lineAge = 40;
         Staff[] arrayStaff = new Staff[5];
         arrayStaff[0] = new Staff("Sergey", "director", "dr@email.com", 555123456, 100000, 32);
         arrayStaff[1] = new Staff("Vladimir", "programmer", "prog@email.com", 555010101, 150000, 41);
