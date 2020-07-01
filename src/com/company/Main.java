@@ -3,6 +3,10 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
+        go();
+    }
+
+    public static void go(){
         Cat cat = new Cat("Vasay", 10, 200, 0);
         Dog dog = new Dog("tod", 4, 500, 200);
         Dog dog2 = new Dog("tod1", 5, 500, 200);
