@@ -2,14 +2,12 @@ package com.company;
 
 public abstract class Animal {
     protected String name;
-    protected int age;
     protected int runing;
     protected int swimming;
     public static int count = 0;
 
     public Animal(String name, int age, int runing, int swimming) {
         this.name = name;
-        this.age = age;
         this.runing = runing;
         this.swimming = swimming;
         count++;
