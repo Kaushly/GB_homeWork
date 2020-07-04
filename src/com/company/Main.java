@@ -6,11 +6,11 @@ public class Main {
         initAnimal();
     }
 
-    public static void initAnimal(){
-        Cat cat = new Cat("Vasay", 10, 200, 0);
-        Dog dog = new Dog("Barbos", 4, 500, 200);
-        Dog dog2 = new Dog("Tod", 5, 500, 200);
-        Dog dog3 = new Dog("Dey", 4, 500, 200);
+    public static void initAnimal() {
+        Cat cat = new Cat("Vasay");
+        Dog dog = new Dog("Barbos");
+        Dog dog2 = new Dog("Tod");
+        Dog dog3 = new Dog("Dey");
         cat.run(2000);
         cat.swim(200);
         dog.run(4000);
