@@ -15,6 +15,7 @@ public class Cat {
         if (p.decreaseFood(appetite)) {
             hungry = false;
             System.out.println("Кот " + name + " съел " + appetite + " еды и наелся!");
+            System.out.println("Кот " + name + " съел " + appetite + " еды и наелся!");
         } else
             System.out.println("Кот " + name + " голодный!");
     }
