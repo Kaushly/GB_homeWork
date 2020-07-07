@@ -1,28 +1,43 @@
 package com.company;
 
-import java.awt.*;
-import java.util.Random;
+public class Cat {
+    private String name;
+    private int appetite;
+    private boolean hungry;
 
-public class Cat extends Animal {
+    public Cat(String name, int appetite) {
+        this.name = name;
+        this.appetite = appetite;
+        this.hungry = true;
+    }
 
-    public static int catCount;
+    public void eat(Plate p) {
+        if (p.decreaseFood(appetite)) {
+            hungry = false;
+            System.out.println("Кот " + name + " съел " + appetite + " еды и наелся!");
+        } else
+            System.out.println("Кот " + name + " голодный!");
+    }
 
-    public Cat(String name) {
-        super(name);
-        int minRun = 200;
-        int maxRun = 400;
-        Random random = new Random();
-        this.runing = random.nextInt(maxRun - minRun) + minRun;
-        catCount++;
+    public boolean isHungry() {
+        return hungry;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAppetite() {
+        return appetite;
     }
 
     @Override
-    public void swim(int i) {
-        System.out.println("Кот " + name + " не умеет плавать");
+    public String toString() {
+        return "Cat " + name + " hungry!";
     }
 
-    @Override
-    public String getType() {
-        return "Кот";
+    public void info() {
+        System.out.println("Cat " + name + " satisfied");
     }
+
 }
