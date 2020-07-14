@@ -7,16 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUIFrame extends JFrame {
-    private JPanel panel;
-    private String lastCommand;
-    private double val = 0.0;
-    private String[] command;
 
     public GUIFrame() {
         setTitle("My first Java GUI");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 300, 500);
-        command = new String[]{" / ", " * ", " - ", " + "};
 
 
         JTextField textField = new JTextField();
@@ -24,8 +19,7 @@ public class GUIFrame extends JFrame {
         add(textField, BorderLayout.NORTH);
 
 
-        ButtonListener buttonListener = new ButtonListener(textField, lastCommand);
-//        CommandListener commandListener = new CommandListener(textField, lastCommand);
+        ButtonListener buttonListener = new ButtonListener(textField);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 3));
