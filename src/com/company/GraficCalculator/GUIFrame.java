@@ -29,7 +29,7 @@ public class GUIFrame extends JFrame {
             jButton.addActionListener(buttonListener);
             panel.add(jButton);
         }
-        JButton commaButton = new JButton(",");
+        JButton commaButton = new JButton(".");
         commaButton.addActionListener(buttonListener);
 
         JButton zeroButton = new JButton("0");
